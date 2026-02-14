@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Love Puzzle Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: linear-gradient(to right, #121212, #5b5b5b);
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #fff;
+    }
+
+    #puzzle {
+      width: 300px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      margin: 20px auto;
+    }
+
+    .piece {
+      width: 100px;
+      height: 100px;
+      background-image: url("myheartintunes.jpg"); /* replace with your image */
+      background-size: 300px 300px;
+      cursor: pointer;
+      border: 1px solid #fff;
+    }
+
+    #loveNote, #playlist {
+      display: none;
+      margin-top: 30px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    iframe {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🧩 Solve the Puzzle</h1>
+  <p>Rearrange the pieces to reveal a surprise ❤️</p>
+
+  <div id="puzzle"></div>
+
+  <div id="loveNote">
+    <h2>💌 Hey Baby</h2>
+    <p>
+      If I were given another lifetime, I would come back to this world with only one purpose—to find you.
+No wandering hearts. No mistaken loves. No searching through faces that were never meant to be mine.
+I would choose you from the very beginning and love you for the whole of that life.
+
+Every first moment would belong to you alone—the first smile, the first dream, the first promise.
+With the quiet joy of knowing I had already found my perfect match.
+
+Now that I have you, my soul is finally at rest.
+This is the last journey of my heart, because in you, I have found my forever.
+
+In you, I have discovered a love that carries peace, deep satisfaction, and true contentment—
+a love I never imagined could exist, yet one my heart always hoped for.
+
+Solving this puzzle reminds me that every scattered piece of my life has finally come together in you.
+You are the answer to every question my heart once asked.
+
+You are my joy, my peace, and my eternal home.
+I love you now and always.
+
+Happy Valentine, Asam. ❤️
+    </p>
+  </div>
+
+  <div id="playlist">
+    <h2>🎶 My Heart in Tunes</h2>
+    <iframe width="300" height="380"
+      src="https://open.spotify.com/embed/playlist/3wKP8PKgC0l0e98H1n6IIu?utm_source=generator"
+      frameborder="0" allow="encrypted-media"></iframe>
+  </div>
+
+  <script>
+    const puzzle = document.getElementById("puzzle");
+    const loveNote = document.getElementById("loveNote");
+    const playlist = document.getElementById("playlist");
+
+    let pieces = [];
+
+    for (let i = 0; i < 9; i++) {
+      let piece = document.createElement("div");
+      piece.className = "piece";
+      piece.style.backgroundPosition = 
+        `${-(i % 3) * 100}px ${-Math.floor(i / 3) * 100}px`;
+      piece.dataset.index = i;
+      pieces.push(piece);
+    }
+
+    pieces.sort(() => Math.random() - 0.5);
+
+    pieces.forEach(p => puzzle.appendChild(p));
+
+    let selected = null;
+
+    puzzle.addEventListener("click", e => {
+      if (!e.target.classList.contains("piece")) return;
+
+      if (!selected) {
+        selected = e.target;
+        selected.style.border = "3px solid red";
+      } else {
+        let temp = selected.style.backgroundPosition;
+        selected.style.backgroundPosition = e.target.style.backgroundPosition;
+        e.target.style.backgroundPosition = temp;
+
+        selected.style.border = "1px solid #fff";
+        selected = null;
+
+        checkWin();
+      }
+    });
+
+    function checkWin() {
+      let correct = true;
+      const currentPieces = document.querySelectorAll(".piece");
+
+      currentPieces.forEach((piece, i) => {
+        const correctX = `${-(i % 3) * 100}px`;
+        const correctY = `${-Math.floor(i / 3) * 100}px`;
+        if (piece.style.backgroundPosition !== `${correctX} ${correctY}`) {
+          correct = false;
+        }
+      });
+
+      if (correct) {
+        loveNote.style.display = "block";
+        playlist.style.display = "block";
+      }
+    }
+  </script>
+
+</body>
+</html>
